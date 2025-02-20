@@ -69,3 +69,19 @@ spec:
       protocol: TCP
       port: 8080
       targetPort: frontend
+
+# Route linuxbot-app
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: linuxbot-route
+spec:  
+  to:
+    kind: Service
+    name: linuxbot
+    weight: 100
+  port:
+    targetPort: frontend
+  wildcardPolicy: None
+
