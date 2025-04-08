@@ -22,6 +22,8 @@ spec:
   selector:
     matchLabels:
       app: ollama
+  nodeSelector: 
+    gpu: gpu
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -33,6 +35,8 @@ spec:
       labels:
         app: ollama
     spec:
+      nodeSelector:
+        gpu: "nvidia"
       containers:
       - args:
         - serve
