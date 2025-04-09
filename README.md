@@ -14,3 +14,6 @@ oc apply -f deployments/ollama-gpu.yaml
 
 ### Create Linuxbot Deployment
 oc apply -f deployments/linuxbot.yaml
+
+
+
