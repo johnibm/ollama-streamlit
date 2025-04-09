@@ -32,7 +32,7 @@ spec:
       creationTimestamp: null
       labels:
         app: ollama
-    spec:
+    spec:      
       containers:
       - args:
         - serve
