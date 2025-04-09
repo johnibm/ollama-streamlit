@@ -33,3 +33,6 @@ fusion101-8jxlg-gpu-us-south-1   1         1         1       1           18h   m
 oc patch machineset fusion101-8jxlg-gpu-us-south-1 -n openshift-machine-api --type merge \
     --patch '{"spec": {"template": {"spec": {"metadata": {"labels": {"nvidia.com/device-plugin.config": "NVIDIA-L40S"}}}}}}'
 
+### Scale MachineSet
+oc patch machineset fusion101-8jxlg-gpu-us-south-1 -n openshift-machine-api --type merge --patch '{"spec": {"replicas":0}}'
+oc patch machineset fusion101-8jxlg-gpu-us-south-1 -n openshift-machine-api --type merge --patch '{"spec": {"replicas":1}}'
