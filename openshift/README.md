@@ -17,6 +17,7 @@ oc patch clusterpolicy gpu-cluster-policy \
 
 oc label --overwrite node --selector=nvidia.com/gpu.product=NVIDIA-L40S nvidia.com/device-plugin.config=NVIDIA-L40S
 
+
 ### Validate
 oc get node --selector=nvidia.com/gpu.product=NVIDIA-L40S -o json | jq '.items[0].status.capacity'
 oc get node --selector=nvidia.com/gpu.product=NVIDIA-L40S-SHARED -o json | jq '.items[0].status.capacity'
