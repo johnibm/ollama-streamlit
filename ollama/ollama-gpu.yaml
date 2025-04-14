@@ -37,8 +37,8 @@ spec:
       - args:
         - serve
         env:
-        - name: FOO
-          value: BAR
+        - name: CONTAINER_NAME
+          value: oollama
         image: docker.io/ollama/ollama:latest
         imagePullPolicy: Always
         resources:
