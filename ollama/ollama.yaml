@@ -35,8 +35,8 @@ spec:
       labels:
         app: ollama
     spec:
-      nodeSelector:
-        gpu: "nvidia"
+      #nodeSelector:
+      #  gpu: "nvidia"
       containers:
       - args:
         - serve
