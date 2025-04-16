@@ -35,7 +35,7 @@ spec:
     spec:      
       containers:      
         - name: ubuntu
-          image: ubuntu:latest
+          image: nvidia/cuda:12.8.1-cudnn-runtime-ubuntu24.04
           command:
             - sleep
             - infinity              
