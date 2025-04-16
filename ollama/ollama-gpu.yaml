@@ -37,8 +37,8 @@ spec:
       - args:
         - serve
         env:
-        - name: CONTAINER_NAME
-          value: oollama
+        - name: OLLAMA_PORT
+          value: 11434
         image: docker.io/ollama/ollama:latest
         imagePullPolicy: Always
         resources:
