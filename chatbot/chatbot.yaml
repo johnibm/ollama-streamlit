@@ -1,0 +1,105 @@
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chatbot
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: chatbot-app
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: chatbot-app
+    spec:
+      containers:
+      - args:
+        - streamlit run app.py --server.port 8080
+        env:
+        - name: OLLAMA_HOST
+          value: ollama
+        #image: quay.io/johnibm/chatbot-app:latest
+        image: quay.io/sroecker/linuxbot-app:latest
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 2000m
+            memory: 3Gi
+          limits:
+            cpu: 4000m
+            memory: 6Gi
+        name: chatbot
+        ports:
+        - containerPort: 8080
+          name: frontend
+          protocol: TCP
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /dev/shm
+          name: shm
+        - mountPath: /data
+          name: chatbot-data
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: shm
+        emptyDir:
+          medium: Memory
+          sizeLimit: 2Gi
+      - name: chatbot-data
+        persistentVolumeClaim:
+          claimName: chatbot-data
+---
+# PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ollama-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+---
+# Service chatbot-app
+apiVersion: v1
+kind: Service
+metadata:
+  name: chatbot
+spec:
+  selector:
+    app: chatbot-app
+  ports:
+    - name: frontend
+      protocol: TCP
+      port: 8080
+      targetPort: frontend
+
+# Route chatbot-app
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: chatbot-route
+spec:  
+  to:
+    kind: Service
+    name: chatbot
+    weight: 100
+  port:
+    targetPort: frontend
+  wildcardPolicy: None
+
